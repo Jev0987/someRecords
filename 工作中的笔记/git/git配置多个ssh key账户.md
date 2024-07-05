@@ -94,7 +94,7 @@ cat ~/.ssh/github-rsa.pub
 cat ~/.ssh/gitlab-rsa.pub
 ```
 
-![ssh key截图](./pic/image.png)
+![ssh key截图](../pic/image.png)
 
 ### 3.2 在远程仓库中配置
 
@@ -115,7 +115,7 @@ setting找到ssh key
 ```shell
 ssh -T git@github.com
 ```
-![alt text](pic/image2.png)
+![alt text](../pic/image2.png)
 
 
 ok 完成
