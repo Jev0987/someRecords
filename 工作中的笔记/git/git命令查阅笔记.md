@@ -47,7 +47,7 @@ git add .
 git commit -m "message"
 ```
 
-推送到远程库（假如配置好了）
+推送到远程库（配置好了远程仓库的情况下）
 ```shell
 git push
 ```
@@ -85,4 +85,47 @@ git branch -d <name>
 git branch f <name>
 ```
 
-# 版本
+# stash 临时保存
+执行临时存储，添加备注
+```shell
+git stash save "message"
+```
+
+查看存储
+```shell
+git stash list
+```
+
+查看做了哪些改动
+```shell
+git stash show
+git stash show stash@{num}
+```
+
+查看存储的改动
+```shell
+git stash show -p
+git stash show stash@{num} -p
+```
+
+应用存储
+```shell
+git stash apply
+```
+
+恢复之前缓存的工作目录
+```shell
+git stash pop
+```
+
+丢弃stash@{$num}存储
+```shell
+git stash drop stash@{$num}
+```
+
+删除所有的缓存stash
+```shell
+git stash clear
+```
+
+
