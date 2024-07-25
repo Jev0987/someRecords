@@ -85,7 +85,33 @@ git branch -d <name>
 git branch f <name>
 ```
 
-# stash 临时保存
+分支太杂乱，太长，太多commit
+```shell
+git rebase -i HEAD~x
+```
+```shell
+git rebase -i [分支hash]
+```
+在 vim中修改 需要合并掉的分支
+
+改掉对应的分支，将pick 改成 f
+
+最后保存提交
+
+**合并分支**
+pull下来
+```shell
+git checkout targetBranch
+git pull
+git merge targetBranch
+```
+
+检查冲突
+
+
+
+
+# stash 临时保存(压栈)
 执行临时存储，添加备注
 ```shell
 git stash save "message"
