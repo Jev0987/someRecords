@@ -38,7 +38,7 @@ cancelled_write_bytes : xxx
 但是，如何计算IO呢？
 
 # 如何计算IO
-直接说结论：
+先说我的解决办法：
 
 可以在 `proc/[pid]/sched`中的字段 : statistics.iowait_sum读取到累计IO阻塞时间。
 
