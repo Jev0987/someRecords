@@ -162,17 +162,48 @@ taskstats结构体用于存储进程或线程的统计信息。
 
 可以关注到：
 ```cpp
-	tmp = d->blkio_delay_total + tsk->delays->blkio_delay;
-	d->blkio_delay_total = (tmp < d->blkio_delay_total) ? 0 : tmp;
+tmp = d->blkio_delay_total + tsk->delays->blkio_delay;
+d->blkio_delay_total = (tmp < d->blkio_delay_total) ? 0 : tmp;
 ```
 
-那么，怎么得到：`tsk->delays->blkio_delay`呢？ 
+两个结构体的数据
 
-这个应该是任务的等待IO阻塞时间。
+一个是使用`struct taskstats *d` 另一个是使用 `struct task_struct *tsk` 
 
-在这里卡住了。
+得到对应的`blkio_delay_total` 和 `delays->blkio_delay`
 
-不过可以看到，单纯的想直接获取到taskstats中的数据是很困难的。
 
-必须有Netlink相关的知识，通过内核态发出的信息来计算相关数值。
+1. taskstats：用于统计和报告任务的性能数据
+2. task_struct：内核管理进程的核心数据，包含进程的所有信息。
 
+task_struct结构体中包含delays结构体，用于记录各种延迟信息（如IO延迟）
+
+taskstats使用blkio_delay_total来存储延迟信息的总和。
+
+可以通过头文件
+
+```cpp
+#incldue <linux/sched.h>
+#include <linux/taskstats.h>
+#include <linux/spinlock.h>  // 用于锁定结构体中的字段
+```
+得到这两个结构体的数据，然后再计算。
+
+```cpp
+int update_taskstats(struct taskstats *d, struct task_struct *tsk) {
+    unsigned long flags;
+    u64 tmp;
+
+    // 锁定 task_struct 的 delays 字段
+    spin_lock_irqsave(&tsk->delays->lock, flags);
+
+    // 更新 blkio_delay_total
+    tmp = d->blkio_delay_total + tsk->delays->blkio_delay;
+    d->blkio_delay_total = (tmp < d->blkio_delay_total) ? 0 : tmp;
+
+    // 解锁
+    spin_unlock_irqrestore(&tsk->delays->lock, flags);
+
+    return 0;
+}
+```
