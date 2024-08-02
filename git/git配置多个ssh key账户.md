@@ -16,12 +16,11 @@ ssh-keygen -t rsa -C "youemail@xxx.com” -f ~/.ssh/github-rsa
 在.ssh目录下检查一下是否生成了对应的ssh key文件
 
 ```shell
-ls -l ~/.ssh
+ls ~/.ssh
 ```
 
 ```shell
-github-rsa.pub  gitlab-rsa.pub   known_hosts.old
-github-rsa  gitlab-rsa  known_hosts
+github-rsa.pub  gitlab-rsa.pub github-rsa  gitlab-rsa
 ```
 
 ## 2. 配置config文件
